@@ -116,7 +116,7 @@ export const App = () => {
 
 ## Concepts
 
-### Config:
+### Context:
 
 Anything dynamic (or static) that you need for your form fields. Could be, for example:
 
