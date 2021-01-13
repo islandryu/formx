@@ -152,7 +152,7 @@ Deps are field names upon which your field depends on. Each time one of the fiel
 
 Big forms (30+ fields) are hard to maintain.
 The idea is to keep everything related to your form (initial values, validation rules, appearance, effects, bussiness logic...) in one place - a configuration. 
-Also, performance - in this library only what needs to be rendered gets rendered.
+Also, performance - in this library only what needs to be rendered, gets rendered.
 
 ## Plans
 
