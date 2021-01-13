@@ -10,7 +10,10 @@ type Props = {
     resetForm: () => void;
   }) => any;
   context: Context;
-  onSubmit: (data: IndexObject) => void;
+  onSubmit: (
+    originalValues: IndexObject,
+    transformedValues: IndexObject
+  ) => void;
   config: Config;
 };
 
@@ -62,11 +65,23 @@ export class Form extends Component<Props, State> {
     Object.keys(this.fieldRefs).forEach((name) => this.updateField(name));
   };
 
-  getValues = () => {
+  getValues = (isTransform?: boolean) => {
     return Object.entries(this.fieldRefs).reduce<IndexObject>(
       (values, [name, r]) => {
         if (!r.current) return values;
-        values[name] = r.current.getValue();
+        const fieldConfig = this.props.config[name];
+        if (isTransform) {
+          values[name] = fieldConfig.transform
+            ? fieldConfig.transform(
+                this.props.context,
+                this.getFormProp(),
+                r.current.getValue()
+              )
+            : r.current.getValue();
+        } else {
+          values[name] = r.current.getValue();
+        }
+
         return values;
       },
       {}
@@ -155,7 +170,7 @@ export class Form extends Component<Props, State> {
     });
     setTimeout(() => {
       if (this.isValid()) {
-        this.props.onSubmit(this.getValues());
+        this.props.onSubmit(this.getValues(), this.getValues(true));
       }
     });
   };

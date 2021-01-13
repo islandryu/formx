@@ -29,4 +29,5 @@ export type FieldConfig<Props = any> = {
     error?: string | undefined;
   };
   effect?: (context: Context, form: FormPropWithMutations) => void;
+  transform?: (context: Context, form: FormProp, value: any) => any;
 };

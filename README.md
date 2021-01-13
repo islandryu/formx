@@ -55,6 +55,17 @@ const config = {
       value: `${context.person?.firstName} ${context.person?.lastName}`,
     }),
   },
+  dateOfBirth: {
+    component: DateField,
+    props: (context, form) => ({
+      label: 'Date of birth',
+      schema: yup.date().required(),
+    }),
+    initState: (context) => ({
+      value: context.person ? new Date(context.person.dateOfBirth) : null,
+    }),
+    transform: (context, form, value) => (value ? value.toISOString() : null),
+  },
 };
 ```
 
@@ -111,7 +122,9 @@ export const App = () => {
     <Form
       config={config}
       context={context}
-      onSubmit={(data) => console.log(data)}
+      onSubmit={(originalValues, transformedValues) =>
+        console.log(transformedValues)
+      }
       ref={formRef}
     >
       {({ fields, submitForm, resetForm }) => {
@@ -130,7 +143,7 @@ export const App = () => {
 };
 ```
 
-## Concepts
+## Concepts and API
 
 ### Context:
 
@@ -169,6 +182,10 @@ Deps are field names upon which your field depends on. Each time one of the fiel
 `effect` function is called every time one of the fields in `deps` updates. You can do mutations here.
 You get `setValue` and `setError` in the second argument (`form`)
 
+### Transform
+
+`transform` function is used to transform the values you get on submit. In your onSubmit function you'll get originalValues and transformedValues as arguments.
+
 ## Why?
 
 Big forms (30+ fields) are hard to maintain.
@@ -178,5 +195,6 @@ Also, performance - in this library only what needs to be rendered, gets rendere
 ## Plans
 
 - Add a validate function for fields also.
+- Add context so you can get the form return values (fields, submitForm, resetForm...) in deeply nested parts of the tree more easily.
 
 <!-- anything below this line will be safe from template removal -->

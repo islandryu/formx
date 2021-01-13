@@ -4,6 +4,8 @@ import * as ReactDOM from 'react-dom';
 import { Config, Form } from '../.';
 import * as yup from 'yup';
 import { useState, useEffect } from 'react';
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
 
 const TextField = ({ label, field }) => {
   return (
@@ -15,6 +17,16 @@ const TextField = ({ label, field }) => {
         value={field.value ?? ''}
         onChange={(e) => field.onChange(e.target.value)}
       />
+      {field.error}
+    </div>
+  );
+};
+
+const DateField = ({ label, field }) => {
+  return (
+    <div>
+      <h4>{label}</h4>
+      <DatePicker {...field} selected={field.value} onChange={field.onChange} />
       {field.error}
     </div>
   );
@@ -58,6 +70,17 @@ const config: Config = {
       value: `${context.person?.firstName} ${context.person?.lastName}`,
     }),
   },
+  dateOfBirth: {
+    component: DateField,
+    props: (context, form) => ({
+      label: 'Date of birth',
+      schema: yup.date().required(),
+    }),
+    initState: (context) => ({
+      value: context.person ? new Date(context.person.dateOfBirth) : null,
+    }),
+    transform: (context, form, value) => (value ? value.toISOString() : null),
+  },
 };
 
 const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
@@ -67,6 +90,7 @@ const getPerson = async () => {
   const person = {
     firstName: 'Dusan',
     lastName: 'Jovanov',
+    dateOfBirth: new Date().toISOString(),
   };
   await sleep(500);
   return person;
@@ -99,7 +123,9 @@ export const App = () => {
     <Form
       config={config}
       context={context}
-      onSubmit={(data) => console.log(data)}
+      onSubmit={(originalValues, transformedValues) =>
+        console.log(originalValues, transformedValues)
+      }
       ref={formRef}
     >
       {({ fields, submitForm, resetForm }) => {
@@ -109,6 +135,7 @@ export const App = () => {
             {fields.firstName}
             {fields.lastName}
             {fields.fullName}
+            {fields.dateOfBirth}
             <button onClick={() => submitForm()}>Submit</button>
             <button onClick={() => resetForm()}>Reset</button>
           </div>
