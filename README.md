@@ -42,7 +42,7 @@ const config = {
 };
 ```
 
-2. Create a component thats going to be rendered for the field. A component is just a plain React component.:
+2. Create a component thats going to be rendered for the field. A component is just a plain React component.
 
 Example:
 
@@ -65,7 +65,7 @@ const TextField = ({ label, field }) => {
 
 The only special thing is the field prop which contains `value, error, onChange, onBlur`
 
-3. Put the `Form` component in your Form page and pass it the `config, context, onSubmit`
+3. Put the `Form` component in your Form page and pass it the `config, context, onSubmit`:
 
 ```javascript
 export const App = () => {
