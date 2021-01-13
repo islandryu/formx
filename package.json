@@ -1,5 +1,5 @@
 {
-  "version": "0.2.0",
+  "version": "0.2.1",
   "license": "MIT",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
@@ -36,6 +36,9 @@
     "trailingComma": "es5"
   },
   "name": "@formx/formx",
+  "repository": {
+    "url": "https://github.com/dusanjovanov/formx"
+  },
   "author": "Dusan Jovanov",
   "module": "dist/formx2.esm.js",
   "size-limit": [
