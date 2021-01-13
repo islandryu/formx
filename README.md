@@ -136,6 +136,18 @@ Fields are updated (rendered) imperatively only when something changes concernin
 There is also a `deps` field in the field config which tells `formx` to update that field also when the fields set in `deps` are updated.
 You can use other fields values from the second argument of the props function - `form`
 
+### Props
+
+Anything you wish to pass to your component. The only prop with special treatment is `schema` which is used for validation.
+
+### Deps
+
+Deps are field names upon which your field depends on. Each time one of the fields in the array gets updated (value, error), that field gets updated too.
+
+### initState function
+
+`initState` is called on mount of each field, and when you call `resetForm`. You can pass `value` and `error` here.
+
 ## Why?
 
 Big forms (30+ fields) are hard to maintain.
