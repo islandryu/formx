@@ -79,6 +79,14 @@ export class Field extends Component<Props, State> {
     this.validate();
   };
 
+  setValue = (value: any) => {
+    this.setState({ ...this.state, value });
+  };
+
+  setError = (error: Error) => {
+    this.setState({ ...this.state, error });
+  };
+
   render() {
     return (
       <this.props.config.component

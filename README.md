@@ -31,12 +31,28 @@ const config = {
   lastName: {
     component: TextField,
     props: (context, form) => ({
-      label: form.values.firstName,
+      label: 'Last name',
       schema: yup.string().required(),
     }),
-    deps: ['firstName'],
     initState: (context) => ({
       value: context.person?.lastName,
+    }),
+  },
+  fullName: {
+    component: TextField,
+    props: (context, form) => ({
+      label: 'Full name',
+      schema: yup.string().required(),
+    }),
+    deps: ['firstName', 'lastName'],
+    effect: (context, form) => {
+      form.setValue(
+        'fullName',
+        `${form.values.firstName} ${form.values.lastName}`
+      );
+    },
+    initState: (context) => ({
+      value: `${context.person?.firstName} ${context.person?.lastName}`,
     }),
   },
 };
@@ -148,10 +164,15 @@ Deps are field names upon which your field depends on. Each time one of the fiel
 
 `initState` is called on mount of each field, and when you call `resetForm`. You can pass `value` and `error` here.
 
+### Effect
+
+`effect` function is called every time one of the fields in `deps` updates. You can do mutations here.
+You get `setValue` and `setError` in the second argument (`form`)
+
 ## Why?
 
 Big forms (30+ fields) are hard to maintain.
-The idea is to keep everything related to your form (initial values, validation rules, appearance, effects, bussiness logic...) in one place - a configuration. 
+The idea is to keep everything related to your form (initial values, validation rules, appearance, effects, bussiness logic...) in one place - a configuration.
 Also, performance - in this library only what needs to be rendered, gets rendered.
 
 ## Plans

@@ -28,6 +28,8 @@ export class Form extends Component<Props, State> {
     };
   }
 
+  fieldRefs: IndexObject<RefObject<Field>> = {};
+
   componentDidMount() {
     const fields: IndexObject = {};
     for (const [name, c] of Object.entries(this.props.config)) {
@@ -50,7 +52,15 @@ export class Form extends Component<Props, State> {
     this.setState({ fields });
   }
 
-  fieldRefs: IndexObject<RefObject<Field>> = {};
+  componentDidUpdate(prevProps: Props) {
+    if (prevProps.context !== this.props.context) {
+      this.updateAllFields();
+    }
+  }
+
+  updateAllFields = () => {
+    Object.keys(this.fieldRefs).forEach((name) => this.updateField(name));
+  };
 
   getValues = () => {
     return Object.entries(this.fieldRefs).reduce<IndexObject>(
@@ -81,6 +91,23 @@ export class Form extends Component<Props, State> {
     };
   };
 
+  getFormPropWithMutations = () => {
+    return {
+      values: this.getValues(),
+      errors: this.getErrors(),
+      setValue: (name: string, value: any) => {
+        const fieldRef = this.fieldRefs[name].current;
+        if (!fieldRef) return;
+        fieldRef.setValue(value);
+      },
+      setError: (name: string, error: Error) => {
+        const fieldRef = this.fieldRefs[name].current;
+        if (!fieldRef) return;
+        fieldRef.setError(error);
+      },
+    };
+  };
+
   updateField = (name: string) => {
     const fieldRef = this.fieldRefs[name].current;
     if (!fieldRef) return;
@@ -98,13 +125,13 @@ export class Form extends Component<Props, State> {
     );
   };
 
-  broadcast = (name: string, type: string) => {
-    if (type === 'value') {
-      this.validateField(name);
-    }
+  broadcast = (name: string) => {
     Object.entries(this.props.config).forEach(([n, c]) => {
       if (c.deps && c.deps.includes(name)) {
         this.updateField(n);
+        if (c.effect) {
+          c.effect(this.props.context, this.getFormPropWithMutations());
+        }
       }
     });
   };

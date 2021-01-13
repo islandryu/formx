@@ -13,6 +13,11 @@ export type FormProp = {
   errors: IndexObject<Error>;
 };
 
+export type FormPropWithMutations = FormProp & {
+  setValue: (name: string, value: any) => void;
+  setError: (name: string, error: Error) => void;
+};
+
 export type FieldConfig<Props = any> = {
   component: React.FC<Props>;
   props: (context: Context, form: FormProp) => IndexObject;
@@ -23,4 +28,5 @@ export type FieldConfig<Props = any> = {
     value?: any;
     error?: string | undefined;
   };
+  effect?: (context: Context, form: FormPropWithMutations) => void;
 };

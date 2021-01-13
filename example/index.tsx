@@ -34,12 +34,28 @@ const config: Config = {
   lastName: {
     component: TextField,
     props: (context, form) => ({
-      label: form.values.firstName,
+      label: 'Last name',
       schema: yup.string().required(),
     }),
-    deps: ['firstName'],
     initState: (context) => ({
       value: context.person?.lastName,
+    }),
+  },
+  fullName: {
+    component: TextField,
+    props: (context, form) => ({
+      label: 'Full name',
+      schema: yup.string().required(),
+    }),
+    deps: ['firstName', 'lastName'],
+    effect: (context, form) => {
+      form.setValue(
+        'fullName',
+        `${form.values.firstName} ${form.values.lastName}`
+      );
+    },
+    initState: (context) => ({
+      value: `${context.person?.firstName} ${context.person?.lastName}`,
     }),
   },
 };
@@ -92,6 +108,7 @@ export const App = () => {
             {isLoading && <h1>Loading person...</h1>}
             {fields.firstName}
             {fields.lastName}
+            {fields.fullName}
             <button onClick={() => submitForm()}>Submit</button>
             <button onClick={() => resetForm()}>Reset</button>
           </div>
