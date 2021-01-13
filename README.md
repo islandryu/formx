@@ -2,7 +2,7 @@
 
 ![FormX](https://github.com/dusanjovanov/formx/blob/master/logo.png 'FormX')
 
-Tiny, very fast React form library.
+Small 📦, very fast 🚀 React form library.
 
 [![npm](https://badge.fury.io/js/%40formx%2Fformx.svg)](https://www.npmjs.com/package/@formx/formx)
 
@@ -177,7 +177,6 @@ Also, performance - in this library only what needs to be rendered, gets rendere
 
 ## Plans
 
-- Effects for fields - so you can set a value imperatively when something happens (A fields value changes). This is useful for calculcated fields.
 - Add a validate function for fields also.
 
 <!-- anything below this line will be safe from template removal -->
