@@ -136,6 +136,12 @@ Fields are updated (rendered) imperatively only when something changes concernin
 There is also a `deps` field in the field config which tells `formx` to update that field also when the fields set in `deps` are updated.
 You can use other fields values from the second argument of the props function - `form`
 
+## Why?
+
+Big forms (30+ fields) are hard to maintain.
+The idea is to keep everything related to your form (initial values, validation rules, appearance, effects, bussiness logic...) in one place - a configuration. 
+Also, performance - in this library only what needs to be rendered gets rendered.
+
 ## Plans
 
 - Effects for fields - so you can set a value imperatively when something happens (A fields value changes). This is useful for calculcated fields.
