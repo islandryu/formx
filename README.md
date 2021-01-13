@@ -143,7 +143,7 @@ export const App = () => {
 };
 ```
 
-## Concepts and API
+## Concepts
 
 ### Context:
 
@@ -195,6 +195,5 @@ Also, performance - in this library only what needs to be rendered, gets rendere
 ## Plans
 
 - Add a validate function for fields also.
-- Add context so you can get the form return values (fields, submitForm, resetForm...) in deeply nested parts of the tree more easily.
 
 <!-- anything below this line will be safe from template removal -->

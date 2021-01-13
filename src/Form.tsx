@@ -1,14 +1,22 @@
-import { Component, createRef, RefObject, ReactNode } from 'react';
+import {
+  Component,
+  createRef,
+  RefObject,
+  ReactNode,
+  createContext,
+} from 'react';
 import { Field } from './Field';
 import { Config, Context, IndexObject, Error } from './types';
 import * as React from 'react';
 
+type API = {
+  fields: IndexObject<ReactNode>;
+  submitForm: () => void;
+  resetForm: () => void;
+};
+
 type Props = {
-  children: (args: {
-    fields: IndexObject<ReactNode>;
-    submitForm: () => void;
-    resetForm: () => void;
-  }) => any;
+  children: (args: API) => any;
   context: Context;
   onSubmit: (
     originalValues: IndexObject,
@@ -22,6 +30,8 @@ type State = {
 };
 
 export type Broadcast = (name: string, type: string) => void;
+
+export const FormContext = createContext<API>({} as API);
 
 export class Form extends Component<Props, State> {
   constructor(props: Props) {
@@ -182,10 +192,20 @@ export class Form extends Component<Props, State> {
   };
 
   render() {
-    return this.props.children({
-      fields: this.state.fields,
-      submitForm: this.submitForm,
-      resetForm: this.resetForm,
-    });
+    return (
+      <FormContext.Provider
+        value={{
+          fields: this.state.fields,
+          submitForm: this.submitForm,
+          resetForm: this.resetForm,
+        }}
+      >
+        {this.props.children({
+          fields: this.state.fields,
+          submitForm: this.submitForm,
+          resetForm: this.resetForm,
+        })}
+      </FormContext.Provider>
+    );
   }
 }
