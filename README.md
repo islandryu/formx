@@ -118,7 +118,7 @@ export const App = () => {
 
 ### Config:
 
-Anything dynamic that you need for your form fields. Could be, for example:
+Anything dynamic (or static) that you need for your form fields. Could be, for example:
 
 1. Bussiness object from the server
 2. Some state you have
