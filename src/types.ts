@@ -13,6 +13,12 @@ export type FormProp = {
   errors: IndexObject<Error>;
 };
 
+export type PropsObject = {
+  schema?: any;
+  validate?: (value: any) => undefined | string | Promise<any>;
+  [key: string]: any;
+};
+
 export type FormPropWithMutations = FormProp & {
   setValue: (name: string, value: any) => void;
   setError: (name: string, error: Error) => void;
@@ -20,7 +26,7 @@ export type FormPropWithMutations = FormProp & {
 
 export type FieldConfig<Props = any> = {
   component: React.FC<Props>;
-  props: (context: Context, form: FormProp) => IndexObject;
+  props: (context: Context, form: FormProp) => PropsObject;
   deps?: string[];
   initState?: (
     context: Context

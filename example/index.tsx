@@ -47,7 +47,16 @@ const config: Config = {
     component: TextField,
     props: (context, form) => ({
       label: 'Last name',
-      schema: yup.string().required(),
+      validate: (value) => {
+        if (
+          value === undefined ||
+          value === null ||
+          value === '' ||
+          typeof value !== 'string'
+        ) {
+          return new Promise((r) => r('This is required'));
+        }
+      },
     }),
     initState: (context) => ({
       value: context.person?.lastName,

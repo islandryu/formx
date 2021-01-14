@@ -32,7 +32,16 @@ const config = {
     component: TextField,
     props: (context, form) => ({
       label: 'Last name',
-      schema: yup.string().required(),
+      validate: (value) => {
+        if (
+          value === undefined ||
+          value === null ||
+          value === '' ||
+          typeof value !== 'string'
+        ) {
+          return 'This is required';
+        }
+      },
     }),
     initState: (context) => ({
       value: context.person?.lastName,
@@ -167,7 +176,7 @@ You can use other fields values from the second argument of the props function -
 
 ### Props
 
-Anything you wish to pass to your component. The only prop with special treatment is `schema` which is used for validation.
+Anything you wish to pass to your component. The only props with special treatment are `schema` and `validate` which are used for validation.
 
 ### Deps
 
@@ -191,9 +200,5 @@ You get `setValue` and `setError` in the second argument (`form`)
 Big forms (30+ fields) are hard to maintain.
 The idea is to keep everything related to your form (initial values, validation rules, appearance, effects, bussiness logic...) in one place - a configuration.
 Also, performance - in this library only what needs to be rendered, gets rendered.
-
-## Plans
-
-- Add a validate function for fields also.
 
 <!-- anything below this line will be safe from template removal -->

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Broadcast } from './Form';
-import { Error, FieldConfig } from './types';
+import { Error, FieldConfig, PropsObject } from './types';
+import { isFunction, isPromise } from './util';
 
 type Props = {
   config: FieldConfig;
@@ -14,6 +15,7 @@ type State = {
   schema?: any;
   value: any;
   error: Error;
+  validate?: PropsObject['validate'];
 };
 
 export class Field extends Component<Props, State> {
@@ -53,6 +55,17 @@ export class Field extends Component<Props, State> {
         .catch((err: any) => {
           this.setState({ ...this.state, error: err.errors[0] });
         });
+    } else if (this.state.validate) {
+      if (isFunction(this.state.validate)) {
+        const result = this.state.validate(this.state.value);
+        if (isPromise(result)) {
+          result
+            .then((err) => this.setState({ ...this.state, error: err }))
+            .catch((err) => console.log(err));
+        } else {
+          this.setState({ ...this.state, error: result as string });
+        }
+      }
     }
   };
 
