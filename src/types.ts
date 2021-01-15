@@ -2,7 +2,7 @@ export type IndexObject<T = any> = {
   [key: string]: T;
 };
 
-export type Config = IndexObject<FieldConfig>;
+export type Config<Context = IndexObject> = IndexObject<FieldConfig<Context>>;
 
 export type Error = string | undefined;
 
@@ -24,9 +24,9 @@ export type FormPropWithMutations = FormProp & {
   setError: (name: string, error: Error) => void;
 };
 
-export type FieldConfig<Props = any> = {
+export type FieldConfig<Context = IndexObject, Props = PropsObject> = {
   component: React.FC<Props>;
-  props: (context: Context, form: FormProp) => PropsObject;
+  props: (context: Context, form: FormProp) => Props;
   deps?: string[];
   initState?: (
     context: Context

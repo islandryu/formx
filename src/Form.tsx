@@ -4,6 +4,7 @@ import {
   RefObject,
   ReactNode,
   createContext,
+  Fragment,
 } from 'react';
 import { Field } from './Field';
 import { Config, Context, IndexObject, Error } from './types';
@@ -202,7 +203,7 @@ export class Form extends Component<Props, State> {
     return Object.entries(this.props.config)
       .filter(([name, c]) => (filter ? filter(name, c) : true))
       .map(([name, _]) => {
-        return this.state.fields[name];
+        return <Fragment key={name}>{this.state.fields[name]}</Fragment>;
       });
   };
 
