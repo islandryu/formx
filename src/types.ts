@@ -36,4 +36,5 @@ export type FieldConfig<Props = any> = {
   };
   effect?: (context: Context, form: FormPropWithMutations) => void;
   transform?: (context: Context, form: FormProp, value: any) => any;
+  [key: string]: any;
 };
