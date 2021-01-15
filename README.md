@@ -1,6 +1,6 @@
 # formx
 
-![formx](https://github.com/dusanjovanov/formx/blob/master/logo2.png 'formx')
+![formx](https://github.com/dusanjovanov/formx/blob/master/logo.png 'formx')
 
 Small 📦, very fast 🚀 React form library.
 
