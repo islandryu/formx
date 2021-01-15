@@ -8,9 +8,16 @@ import {
 import { Field } from './Field';
 import { Config, Context, IndexObject, Error } from './types';
 import * as React from 'react';
+import { FieldConfig } from '.';
+
+type GetFieldsStackFilterFn = (
+  name: string,
+  fieldConfig: FieldConfig
+) => boolean;
 
 type API = {
   fields: IndexObject<ReactNode>;
+  getFieldsStack: (filter?: GetFieldsStackFilterFn) => ReactNode[];
   submitForm: () => void;
   resetForm: () => void;
 };
@@ -191,6 +198,14 @@ export class Form extends Component<Props, State> {
     });
   };
 
+  getFieldsStack = (filter?: GetFieldsStackFilterFn) => {
+    return Object.entries(this.props.config)
+      .filter(([name, c]) => (filter ? filter(name, c) : true))
+      .map(([name, _]) => {
+        return this.state.fields[name];
+      });
+  };
+
   render() {
     return (
       <FormContext.Provider
@@ -198,12 +213,14 @@ export class Form extends Component<Props, State> {
           fields: this.state.fields,
           submitForm: this.submitForm,
           resetForm: this.resetForm,
+          getFieldsStack: this.getFieldsStack,
         }}
       >
         {this.props.children({
           fields: this.state.fields,
           submitForm: this.submitForm,
           resetForm: this.resetForm,
+          getFieldsStack: this.getFieldsStack,
         })}
       </FormContext.Provider>
     );
