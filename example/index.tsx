@@ -124,11 +124,6 @@ const config: Config = {
     initState: (context) => ({
       value: context.person?.companyName ?? '',
     }),
-    effect: (c, { values, setValue, validateField }) => {
-      setTimeout(() => {
-        validateField('companyName');
-      });
-    },
   },
 };
 

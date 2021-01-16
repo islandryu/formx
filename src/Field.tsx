@@ -55,27 +55,34 @@ export class Field extends Component<Props, State> {
         .catch((err: any) => {
           this.setState({ ...this.state, error: err.errors[0] });
         });
-    } else if (this.state.validate) {
+    }
+    //
+    else if (this.state.validate) {
       if (isFunction(this.state.validate)) {
         const result = this.state.validate(this.state.value);
         if (isPromise(result)) {
           result
             .then((err) => this.setState({ ...this.state, error: err }))
             .catch((err) => console.log(err));
-        } else {
+        }
+        //
+        else {
           this.setState({ ...this.state, error: result as string });
         }
       }
     }
   };
 
-  update = (newState: any) => {
-    this.setState({
-      ...this.state,
-      ...newState,
-      value: this.state.value,
-      error: this.state.error,
-    });
+  update = (newState: any, cb?: () => void) => {
+    this.setState(
+      {
+        ...this.state,
+        ...newState,
+        value: this.state.value,
+        error: this.state.error,
+      },
+      cb
+    );
   };
 
   initState = (newState: any) => {

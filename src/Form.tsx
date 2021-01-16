@@ -144,11 +144,12 @@ export class Form extends Component<Props, State> {
     };
   };
 
-  updateField = (name: string) => {
+  updateField = (name: string, cb?: () => void) => {
     const fieldRef = this.fieldRefs[name].current;
     if (!fieldRef) return;
     fieldRef.update(
-      this.props.config[name].props(this.props.context, this.getFormProp())
+      this.props.config[name].props(this.props.context, this.getFormProp()),
+      cb
     );
   };
 
@@ -164,7 +165,9 @@ export class Form extends Component<Props, State> {
   broadcast = (name: string) => {
     Object.entries(this.props.config).forEach(([n, c]) => {
       if (c.deps && c.deps.includes(name)) {
-        this.updateField(n);
+        this.updateField(n, () => {
+          this.validateField(n);
+        });
         if (c.effect) {
           c.effect(this.props.context, this.getFormPropWithMutations());
         }
