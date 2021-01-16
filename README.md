@@ -75,6 +75,27 @@ const config = {
     }),
     transform: (context, form, value) => (value ? value.toISOString() : null),
   },
+  isEmployed: {
+    component: CheckboxField,
+    props: () => ({
+      label: 'Is employed',
+    }),
+    initState: (context) => ({
+      value: context.person?.isEmployed ?? false,
+    }),
+  },
+  companyName: {
+    component: TextField,
+    props: (context, { values }) => ({
+      label: 'Company',
+      // when values.isEmployed changes this will also be validated
+      schema: values.isEmployed ? yup.string().required() : yup.string(),
+    }),
+    deps: ['isEmployed'],
+    initState: (context) => ({
+      value: context.person?.companyName ?? '',
+    }),
+  },
 };
 ```
 
