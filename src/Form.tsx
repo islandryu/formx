@@ -21,6 +21,7 @@ type API = {
   getFieldsStack: (filter?: GetFieldsStackFilterFn) => ReactNode[];
   submitForm: () => void;
   resetForm: () => void;
+  focusField: (name: string) => void;
 };
 
 type Props = {
@@ -222,22 +223,24 @@ export class Form extends Component<Props, State> {
       });
   };
 
+  focusField = (name: string) => {
+    this.fieldRefs[name].current?.focusField();
+  };
+
+  createAPIProps = () => {
+    return {
+      fields: this.state.fields,
+      submitForm: this.submitForm,
+      resetForm: this.resetForm,
+      getFieldsStack: this.getFieldsStack,
+      focusField: this.focusField,
+    };
+  };
+
   render() {
     return (
-      <FormContext.Provider
-        value={{
-          fields: this.state.fields,
-          submitForm: this.submitForm,
-          resetForm: this.resetForm,
-          getFieldsStack: this.getFieldsStack,
-        }}
-      >
-        {this.props.children({
-          fields: this.state.fields,
-          submitForm: this.submitForm,
-          resetForm: this.resetForm,
-          getFieldsStack: this.getFieldsStack,
-        })}
+      <FormContext.Provider value={this.createAPIProps()}>
+        {this.props.children(this.createAPIProps())}
       </FormContext.Provider>
     );
   }

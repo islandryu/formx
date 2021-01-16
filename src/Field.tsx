@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, createRef } from 'react';
 import { Broadcast } from './Form';
 import { Error, FieldConfig, PropsObject } from './types';
 import { isFunction, isPromise } from './util';
@@ -23,6 +23,8 @@ export class Field extends Component<Props, State> {
     super(props);
     this.state = this.props.initialState;
   }
+
+  focusRef = createRef<{ focus?: () => void }>();
 
   componentDidMount() {
     this.props.onMount();
@@ -107,6 +109,12 @@ export class Field extends Component<Props, State> {
     this.setState({ ...this.state, error });
   };
 
+  focusField = () => {
+    if (!this.focusRef.current) return;
+    if (!isFunction(this.focusRef.current.focus)) return;
+    this.focusRef.current.focus();
+  };
+
   render() {
     return (
       <this.props.config.component
@@ -116,6 +124,7 @@ export class Field extends Component<Props, State> {
           error: this.state.error,
           onChange: this.onChange,
           onBlur: this.onBlur,
+          focusRef: this.focusRef,
         }}
       />
     );

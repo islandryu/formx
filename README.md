@@ -120,7 +120,7 @@ const TextField = ({ label, field }) => {
 };
 ```
 
-The only special thing is the field prop which contains `value, error, onChange, onBlur`
+The only special thing is the field prop which contains `value, error, onChange, onBlur, focusRef`
 
 3. Put the `Form` component in your Form page and pass it the `config, context, onSubmit`:
 
