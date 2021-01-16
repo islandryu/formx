@@ -7,7 +7,7 @@ import {
   Fragment,
 } from 'react';
 import { Field } from './Field';
-import { Config, Context, IndexObject, Error } from './types';
+import { Config, Context, IndexObject, Error, FormProp } from './types';
 import * as React from 'react';
 import { FieldConfig } from '.';
 
@@ -22,6 +22,7 @@ type API = {
   submitForm: () => void;
   resetForm: () => void;
   focusField: (name: string) => void;
+  subscribe: (cb: SubscribeCallback) => void;
 };
 
 type Props = {
@@ -39,6 +40,8 @@ type State = {
   fields: IndexObject;
 };
 
+type SubscribeCallback = (args: FormProp) => void;
+
 export type Broadcast = (name: string, type: string) => void;
 
 export const FormContext = createContext<API>({} as API);
@@ -52,6 +55,7 @@ export class Form extends Component<Props, State> {
   }
 
   fieldRefs: IndexObject<RefObject<Field>> = {};
+  subscribers: SubscribeCallback[] = [];
 
   componentDidMount() {
     const fields: IndexObject = {};
@@ -183,6 +187,7 @@ export class Form extends Component<Props, State> {
         }
       }
     });
+    this.subscribers.forEach((cb) => cb(this.getFormProp()));
   };
 
   validateField = (name: string) => {
@@ -223,6 +228,10 @@ export class Form extends Component<Props, State> {
       });
   };
 
+  subscribe = (cb: SubscribeCallback) => {
+    this.subscribers.push(cb);
+  };
+
   focusField = (name: string) => {
     this.fieldRefs[name].current?.focusField();
   };
@@ -234,6 +243,7 @@ export class Form extends Component<Props, State> {
       resetForm: this.resetForm,
       getFieldsStack: this.getFieldsStack,
       focusField: this.focusField,
+      subscribe: this.subscribe,
     };
   };
 

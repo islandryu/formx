@@ -1,7 +1,7 @@
 import * as React from 'react';
 import 'react-app-polyfill/ie11';
 import * as ReactDOM from 'react-dom';
-import { Config, Form } from '../.';
+import { Config, Form, useFormContext, useSubscribe } from '../.';
 import * as yup from 'yup';
 import { useState, useEffect } from 'react';
 import DatePicker from 'react-datepicker';
@@ -181,7 +181,7 @@ export const App = () => {
       }}
       ref={formRef}
     >
-      {({ fields, submitForm, resetForm }) => {
+      {({ fields, submitForm, resetForm, subscribe }) => {
         return (
           <div>
             {isLoading && <h1>Loading person...</h1>}
@@ -193,11 +193,20 @@ export const App = () => {
             {fields.companyName}
             <button onClick={() => submitForm()}>Submit</button>
             <button onClick={() => resetForm()}>Reset</button>
+            <Subscriber />
           </div>
         );
       }}
     </Form>
   );
+};
+
+const Subscriber = () => {
+  const { values, errors } = useSubscribe();
+
+  console.log(values, errors);
+
+  return null;
 };
 
 ReactDOM.render(<App />, document.getElementById('root'));
