@@ -116,7 +116,9 @@ export class Form extends Component<Props, State> {
     return Object.entries(this.fieldRefs).reduce<IndexObject<Error>>(
       (errors, [name, r]) => {
         if (!r.current) return errors;
-        errors[name] = r.current.getError();
+        const error = r.current.getError();
+        if (error === undefined) return errors;
+        errors[name] = error;
         return errors;
       },
       {}
@@ -132,8 +134,7 @@ export class Form extends Component<Props, State> {
 
   getFormPropWithMutations = () => {
     return {
-      values: this.getValues(),
-      errors: this.getErrors(),
+      ...this.getFormProp(),
       setValue: (name: string, value: any) => {
         const fieldRef = this.fieldRefs[name].current;
         if (!fieldRef) return;
