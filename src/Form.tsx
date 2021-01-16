@@ -31,6 +31,7 @@ type Props = {
     transformedValues: IndexObject
   ) => void;
   config: Config;
+  applyProps?: (name: string, config: FieldConfig) => IndexObject | undefined;
 };
 
 type State = {
@@ -148,7 +149,15 @@ export class Form extends Component<Props, State> {
     const fieldRef = this.fieldRefs[name].current;
     if (!fieldRef) return;
     fieldRef.update(
-      this.props.config[name].props(this.props.context, this.getFormProp()),
+      {
+        ...this.props.config[name].props(
+          this.props.context,
+          this.getFormProp()
+        ),
+        ...(this.props.applyProps
+          ? this.props.applyProps(name, this.props.config[name])
+          : {}),
+      },
       cb
     );
   };

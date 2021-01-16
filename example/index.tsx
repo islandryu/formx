@@ -7,11 +7,11 @@ import { useState, useEffect } from 'react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 
-const TextField = ({ label, isVisible, field }) => {
+const TextField = ({ label, isVisible, field, background }) => {
   if (typeof isVisible === 'boolean' && !isVisible) return null;
 
   return (
-    <div>
+    <div style={{ background }}>
       <h4>{label}</h4>
       <input
         type="text"
@@ -34,9 +34,9 @@ const DateField = ({ label, field }) => {
   );
 };
 
-const CheckboxField = ({ label, field }) => {
+const CheckboxField = ({ label, field, background }) => {
   return (
-    <div>
+    <div style={{ background }}>
       <h4>{label}</h4>
       <input
         type="checkbox"
@@ -172,6 +172,13 @@ export const App = () => {
       onSubmit={(originalValues, transformedValues) =>
         console.log(originalValues, transformedValues)
       }
+      applyProps={(name, config) => {
+        if (name === 'companyName') {
+          return {
+            background: 'yellow',
+          };
+        }
+      }}
       ref={formRef}
     >
       {({ fields, submitForm, resetForm }) => {
