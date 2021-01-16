@@ -22,6 +22,7 @@ export type PropsObject = {
 export type FormPropWithMutations = FormProp & {
   setValue: (name: string, value: any) => void;
   setError: (name: string, error: Error) => void;
+  validateField: (name: string) => void;
 };
 
 export type FieldConfig<Context = IndexObject, Props = PropsObject> = {

@@ -7,7 +7,9 @@ import { useState, useEffect } from 'react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 
-const TextField = ({ label, field }) => {
+const TextField = ({ label, isVisible, field }) => {
+  if (typeof isVisible === 'boolean' && !isVisible) return null;
+
   return (
     <div>
       <h4>{label}</h4>
@@ -28,6 +30,19 @@ const DateField = ({ label, field }) => {
       <h4>{label}</h4>
       <DatePicker {...field} selected={field.value} onChange={field.onChange} />
       {field.error}
+    </div>
+  );
+};
+
+const CheckboxField = ({ label, field }) => {
+  return (
+    <div>
+      <h4>{label}</h4>
+      <input
+        type="checkbox"
+        onChange={(e) => field.onChange(e.target.checked)}
+        checked={field.value}
+      />
     </div>
   );
 };
@@ -90,6 +105,31 @@ const config: Config = {
     }),
     transform: (context, form, value) => (value ? value.toISOString() : null),
   },
+  isEmployed: {
+    component: CheckboxField,
+    props: () => ({
+      label: 'Is employed',
+    }),
+    initState: (context) => ({
+      value: context.person?.isEmployed ?? false,
+    }),
+  },
+  companyName: {
+    component: TextField,
+    props: (context, { values }) => ({
+      label: 'Company',
+      schema: values.isEmployed ? yup.string().required() : yup.string(),
+    }),
+    deps: ['isEmployed'],
+    initState: (context) => ({
+      value: context.person?.companyName ?? '',
+    }),
+    effect: (c, { values, setValue, validateField }) => {
+      setTimeout(() => {
+        validateField('companyName');
+      });
+    },
+  },
 };
 
 const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
@@ -100,6 +140,8 @@ const getPerson = async () => {
     firstName: 'Dusan',
     lastName: 'Jovanov',
     dateOfBirth: new Date().toISOString(),
+    isEmployed: false,
+    companyName: null,
   };
   await sleep(500);
   return person;
@@ -145,6 +187,8 @@ export const App = () => {
             {fields.lastName}
             {fields.fullName}
             {fields.dateOfBirth}
+            {fields.isEmployed}
+            {fields.companyName}
             <button onClick={() => submitForm()}>Submit</button>
             <button onClick={() => resetForm()}>Reset</button>
           </div>

@@ -138,6 +138,9 @@ export class Form extends Component<Props, State> {
         if (!fieldRef) return;
         fieldRef.setError(error);
       },
+      validateField: (name: string) => {
+        this.validateField(name);
+      },
     };
   };
 
