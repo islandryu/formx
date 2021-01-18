@@ -7,7 +7,14 @@ import {
   Fragment,
 } from 'react';
 import { Field } from './Field';
-import { Config, Context, IndexObject, Error, FormProp } from './types';
+import {
+  Config,
+  Context,
+  IndexObject,
+  Error,
+  FormProp,
+  ChangeType,
+} from './types';
 import * as React from 'react';
 import { FieldConfig } from '.';
 
@@ -42,7 +49,7 @@ type State = {
 
 type SubscribeCallback = (args: FormProp) => void;
 
-export type Broadcast = (name: string, type: string) => void;
+export type Broadcast = (name: string, type: ChangeType) => void;
 
 export const FormContext = createContext<API>({} as API);
 
@@ -177,14 +184,17 @@ export class Form extends Component<Props, State> {
     );
   };
 
-  broadcast = (name: string) => {
+  broadcast = (name: string, type: ChangeType) => {
     Object.entries(this.props.config).forEach(([n, c]) => {
       if (c.deps && c.deps.includes(name)) {
         this.updateField(n, () => {
           this.validateField(n);
         });
         if (c.effect) {
-          c.effect(this.props.context, this.getFormPropWithMutations());
+          c.effect(this.props.context, this.getFormPropWithMutations(), {
+            name,
+            type,
+          });
         }
       }
     });

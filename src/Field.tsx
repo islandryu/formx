@@ -99,6 +99,7 @@ export class Field extends Component<Props, State> {
 
   onBlur = () => {
     this.validate();
+    this.props.broadcast(this.props.name, 'blur');
   };
 
   setValue = (value: any) => {

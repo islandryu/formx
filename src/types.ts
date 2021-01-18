@@ -35,7 +35,16 @@ export type FieldConfig<Context = IndexObject, Props = PropsObject> = {
     value?: any;
     error?: string | undefined;
   };
-  effect?: (context: Context, form: FormPropWithMutations) => void;
+  effect?: (
+    context: Context,
+    form: FormPropWithMutations,
+    reason: {
+      name: string;
+      type: ChangeType;
+    }
+  ) => void;
   transform?: (context: Context, form: FormProp, value: any) => any;
   [key: string]: any;
 };
+
+export type ChangeType = 'value' | 'error' | 'blur';
