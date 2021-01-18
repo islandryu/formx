@@ -17,9 +17,13 @@
       "doc5": {
         "title": "Fifth Document"
       },
-      "doc1": {
-        "title": "Latin-ish",
-        "sidebar_label": "Example Page"
+      "overview": {
+        "title": "Overview",
+        "sidebar_label": "Overview"
+      },
+      "quickstart": {
+        "title": "Quickstart",
+        "sidebar_label": "Quickstart"
       }
     },
     "links": {
@@ -27,9 +31,7 @@
       "API": "API"
     },
     "categories": {
-      "Docusaurus": "Docusaurus",
-      "First Category": "First Category",
-      "Second Category": "Second Category"
+      "FormX": "FormX"
     }
   },
   "pages-strings": {

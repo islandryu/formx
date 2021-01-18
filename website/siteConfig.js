@@ -38,7 +38,7 @@ const siteConfig = {
 
   // For no header links in the top nav bar -> headerLinks: [],
   headerLinks: [
-    { doc: 'doc1', label: 'Docs' },
+    { doc: 'overview', label: 'Docs' },
     { doc: 'doc4', label: 'API' },
     // {page: 'help', label: 'Help'},
     // { blog: true, label: 'Blog' },
@@ -48,14 +48,14 @@ const siteConfig = {
   users,
 
   /* path to images for header/footer */
-  headerIcon: 'img/logo-48x48.png',
-  footerIcon: 'img/favicon.ico',
+  headerIcon: 'img/logo.svg',
+  // footerIcon: 'img/favicon.ico',
   favicon: 'img/favicon.ico',
 
   /* Colors for website */
   colors: {
     primaryColor: '#0A2E5C',
-    secondaryColor: '#1c5f3e',
+    secondaryColor: '#0A2E5C',
   },
 
   /* Custom fonts for website */
