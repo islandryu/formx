@@ -16,7 +16,6 @@ export type FormProp = {
 export type PropsObject = {
   schema?: any;
   validate?: (value: any) => undefined | string | Promise<any>;
-  field:FieldType;
   [key: string]: any;
 };
 
@@ -55,5 +54,5 @@ export type FieldType = {
   error:Error;
   onChange:(value: any) => void; 
   onBlur: () => void;
-  focusRef:React.RefObject<{focus?: ( () => void) | undefined}>
+  focusRef:React.RefObject<{[key:string]:any}>
 };
